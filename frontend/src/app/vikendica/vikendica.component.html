@@ -1,0 +1,152 @@
+<header class="top-menu">
+  <div class="menu-left">
+    <a href="/">Početna</a>
+    <a href="/vikendice">Vikendice</a>
+    <a href="/rezervacije_t">Rezervacije</a>
+  </div>
+
+  <div class="menu-right">
+    <a href="/profil">Profil</a>
+    <a href="/promena_lozinke">Promena lozinke</a>
+    <a href="/" (click)="logOut()">Izloguj se</a>
+  </div>
+</header>
+
+
+<div class="page-wrapper">
+<div class="cottage-detail-wrapper" *ngIf="cottage">
+  <h1>{{ cottage.name }}</h1>
+  <p class="location">{{ cottage.location }}</p>
+
+  <!-- Galerija slika -->
+  <div class="gallery">
+    <button (click)="prevPicture()">❮</button>
+    <img [src]="'http://localhost:8080/img/' + cottage.pictures[activePictureIndex]" alt="{{ cottage.name }}">
+    <button (click)="nextPicture()">❯</button>
+  </div>
+
+  <!-- Usluge i cenovnik -->
+  <div class="services-prices">
+    <h3>Usluge</h3>
+    <p>{{ cottage.services }}</p>
+<br>
+    <h3>Cenovnik</h3>
+    <div class="price-table">
+      <div class="price-row">
+        <span class="price-label">Letnja cena</span> <small>(maj, jun, jul, avgust)</small>
+        <span class="price-value">{{ cottage.price_summer | number:'1.2-2' }} RSD</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Zimska cena</span> <small>(decembar, januar, februar)</small>
+        <span class="price-value">{{ cottage.price_winter | number:'1.2-2' }} RSD</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Radnim danom</span>  <small>&nbsp;</small>
+        <span class="price-value">{{ cottage.price_weekday | number:'1.2-2' }} RSD</span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">Vikendom</span>  <small>&nbsp;</small>
+        <span class="price-value">{{ cottage.price_weekend | number:'1.2-2' }} RSD</span>
+      </div>
+    </div>
+<br>
+
+    <p class="phone">
+      📞 Kontakt telefon: <strong>{{ cottage.phone }}</strong>
+    </p>
+
+    <div class="map-container">
+    <div id="map"></div>
+  </div>
+
+  </div>
+
+  
+
+<!-- Multi-step forma rezervacije -->
+<div class="booking-form-card" *ngIf="cottage">
+  <h2>Rezervacija</h2>
+  <form>
+    <!-- KORAK 1 -->
+    <div *ngIf="bookingStep === 1" class="form-grid">
+      <div class="col">
+        <label>Početni datum</label>
+        <input type="datetime-local" [(ngModel)]="startDate" id="startDate" name="startDate">
+
+        <label>Krajnji datum</label>
+        <input type="datetime-local" [(ngModel)]="endDate" id="endDate" name="endDate">
+      </div>
+
+      <div class="col">
+        <label>Odrasli</label>
+        <input type="number" [(ngModel)]="adults" min="1" id="adults" name="adults">
+
+        <label>Deca</label>
+        <input type="number" [(ngModel)]="children" min="0" id="children" name="children">
+      </div>
+    </div>
+
+    <small *ngIf="bookingError" class="red">{{ bookingError }}</small>
+
+    <div class="form-actions" *ngIf="bookingStep === 1">
+      <button type="button" class="btn primary" (click)="nextStep()">Dalje</button>
+    </div>
+
+    <!-- KORAK 2 -->
+    <div *ngIf="bookingStep === 2">
+      <div class="summary">
+        <p>Rezervisano za vikendicu: <strong>{{ cottage.name }}</strong></p>
+        <p>📅 Od: <strong>{{ startDate | date: 'short' }}</strong> do <strong>{{ endDate | date: 'short' }}</strong></p>
+        <p>👤 Odrasli: <strong>{{ adults }}</strong>, 🧒 Deca: <strong>{{ children }}</strong></p>
+        <p class="price"><strong>Ukupna cena: {{ totalPrice | number:'1.2-2' }} RSD</strong></p>
+      </div>
+
+      <div class="form-grid">
+        <div class="col">
+          <label>Broj kartice</label>
+          <div class="card-input-wrapper">
+            <input type="text" [(ngModel)]="cardNumber" id="cardNumber" name="cardNumber" required
+                    (blur)="onCardBlur()" (input)="onCardInput()">
+            <div class="card-icon" [ngClass]="cardType"></div>
+          </div>
+            <small *ngIf="cardError" class="red">{{ cardError }}</small>
+        </div>
+
+        <div class="col">
+          <label>Napomena</label>
+          <textarea [(ngModel)]="notes" maxlength="500" id="notes" name="notes"
+          placeholder="Unesite dodatne informacije."></textarea>
+        </div>
+      </div>
+      <small *ngIf="message" class="red">{{ message }}</small>
+
+      <div class="form-actions">
+        <button type="button" class="btn" (click)="previousStep()">Nazad</button>
+        <button type="button" class="btn primary" (click)="submitBooking()">Potvrdi rezervaciju</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+</div>
+
+<div class="comments" *ngIf="comments.length > 0">
+  <h2 class="com-h">Komentari korisnika</h2>
+
+  <div *ngFor="let c of comments" class="comment-card">
+    <div class="comment-header">
+      <strong>{{ c.user }}</strong>
+      <span class="rating-stars">
+                <ng-container *ngFor="let star of getStars(c.rating); let i = index">
+                    <img [src]="star ? 'img/star-full.png' : 'img/star-empty.png'" alt="star" />
+                </ng-container>
+            </span>
+    </div>
+    <p>{{ c.comment }}</p>
+  </div>
+</div>
+
+
+
+

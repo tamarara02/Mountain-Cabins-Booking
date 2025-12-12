@@ -1,0 +1,23 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2>Prijava administratora</h2>
+    <form>
+      <!-- Korisnicko ime -->
+      <div class="form-group">
+        <label for="username">Korisničko ime</label>
+        <input type="text" [(ngModel)]="username" id="username" name="username" required/>
+      </div>
+
+      <!-- Lozinka -->
+      <div class="form-group">
+        <label for="password">Lozinka</label>
+        <input type="password" [(ngModel)]="password" id="password" name="password" required/>
+      </div>
+
+      <p class="red">{{mistake}}</p>
+
+      <!-- Dugme -->
+      <button type="submit" (click)="logIn()">Prijavite se</button>
+    </form>
+  </div>
+</div>

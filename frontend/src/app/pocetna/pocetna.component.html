@@ -1,0 +1,120 @@
+
+@if(username==null){
+<header class="top-menu">
+  <ul>
+    <li><a href="/">Početna</a></li>
+    <li><a href="/prijava">Prijava</a></li>
+    <li><a href="/registracija">Registracija</a></li>
+  </ul>
+</header>
+} @else if(username!=null && type=='vlasnik'){
+  <header class="top-menu">
+    <div class="menu-left">
+      <a href="/">Početna</a>
+      <a href="/moje_vikendice">Moje vikendice</a>
+      <a href="/rezervacije_v">Rezervacije</a>
+    </div>
+
+    <div class="menu-right">
+      <a href="/statistika">Statistika</a>
+      <a href="/profil">Profil</a>
+      <a href="/promena_lozinke">Promena lozinke</a>
+      <a href="/" (click)="logOut()">Izloguj se</a>
+    </div>
+  </header>
+} @else{
+  <header class="top-menu">
+    <div class="menu-left">
+      <a href="/">Početna</a>
+      <a href="/vikendice">Vikendice</a>
+      <a href="/rezervacije_t">Rezervacije</a>
+    </div>
+
+    <div class="menu-right">
+      <a href="/profil">Profil</a>
+      <a href="/promena_lozinke">Promena lozinke</a>
+      <a href="/" (click)="logOut()">Izloguj se</a>
+    </div>
+  </header>
+}
+
+
+
+<div class="home-wrapper">
+  <div class="home-card">
+    <h1>Dobrodošli na Planinsku vikendicu</h1>
+    <p>
+    Otkrijte najbolje planinske vikendice širom Srbije i uživajte u miru i prirodnom okruženju.  
+    Naša platforma vam omogućava jednostavno pronalaženje, rezervaciju i upravljanje vikendicama, bilo da ste <b>turista</b> ili <b>vlasnik</b>.
+    </p>
+    <p>
+    Istražite našu ponudu ili dodajte svoju vikendicu kako bi je drugi mogli pronaći i rezervisati.
+    </p>
+
+  </div>
+
+  <div class="home-stats">
+    <p><i class="fas fa-home"></i> Ukupan broj vikendica: <span>{{ cottages }}</span></p>
+    <p><i class="fas fa-user-tie"></i> Ukupan broj vlasnika: <span>{{ hosts }}</span></p>
+    <p><i class="fas fa-user"></i> Ukupan broj turista: <span>{{ tourists }}</span></p>
+
+    <hr />
+
+    <p><i class="fas fa-chart-line"></i> Broj rezervisanih vikendica u poslednjih</p>
+    <ul class="stats-list">
+      <li><i class="fas fa-clock"></i> 24 sata: <span>{{ reservations24h }}</span></li>
+      <li><i class="fas fa-calendar-week"></i> 7 dana: <span>{{ reservations7d }}</span></li>
+      <li><i class="fas fa-calendar-alt"></i> 30 dana: <span>{{ reservations30d }}</span></li>
+    </ul>
+
+  </div>
+
+</div>
+
+<!-- FILTER I SORT -->
+<div class="filter-wrapper">
+  <div class="filter-sort">
+    <input type="text" placeholder="Pretraži po nazivu" [(ngModel)]="searchName">
+    <input type="text" placeholder="Pretraži po mestu" [(ngModel)]="searchLocation">
+
+    <button (click)="sortBy('name')">
+      Sortiraj po nazivu {{ sortColumn==='name' ? (sortDirection==='asc' ? '▲' : '▼') : '' }}
+    </button>
+
+    <button (click)="sortBy('location')">
+      Sortiraj po mestu {{ sortColumn==='location' ? (sortDirection==='asc' ? '▲' : '▼') : '' }}
+    </button>
+  </div>
+</div>
+<!-- LISTA VIKENDICA -->
+  <div class="cottages-list">
+    <div *ngFor="let c of getFilteredAndSortedCottages()" class="cottage-card">
+        <div class="cottage-media slider">
+          <button class="slider-btn prev" (click)="prevPicture(c)" *ngIf="c.pictures.length > 1">❮</button>
+
+          <img [src]="'http://localhost:8080/img/' + getActivePicture(c)" alt="{{ c.name }}">
+
+          <button class="slider-btn next" (click)="nextPicture(c)" *ngIf="c.pictures.length > 1">❯</button>
+        </div>
+
+
+      <div class="cottage-body">
+        <h2 class="cottage-title">{{ c.name }}</h2>
+        <p class="cottage-location">{{ c.location }}</p>
+
+        <div class="cottage-services">{{ c.services }}</div>
+
+        <div class="cottage-prices">
+          <div><strong>Letnja cena:</strong> {{ c.price_summer | number:'1.2-2' }} RSD</div>
+          <div><strong>Zimska cena:</strong> {{ c.price_winter | number:'1.2-2' }} RSD</div>
+          <div><strong>Cena radnim danom:</strong> {{ c.price_weekday ? (c.price_weekday | number:'1.2-2') + ' RSD' : '-' }}</div>
+          <div><strong>Cena vikendom:</strong> {{ c.price_weekend ? (c.price_weekend | number:'1.2-2') + ' RSD' : '-' }}</div>
+        </div>
+
+        <div class="cottage-meta">
+          <span class="meta-item">📞 {{ c.phone || '-' }}</span>
+        </div>
+
+      </div>
+    </div>
+  </div>

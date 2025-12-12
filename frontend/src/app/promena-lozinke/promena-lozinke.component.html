@@ -1,0 +1,60 @@
+@if(username!=null && type=='vlasnik'){
+  <header class="top-menu">
+    <div class="menu-left">
+      <a href="/">Početna</a>
+      <a href="/moje_vikendice">Moje vikendice</a>
+      <a href="/rezervacije_v">Rezervacije</a>
+    </div>
+
+    <div class="menu-right">
+      <a href="/statistika">Statistika</a>
+      <a href="/profil">Profil</a>
+      <a href="/promena_lozinke">Promena lozinke</a>
+      <a href="/" (click)="logOut()">Izloguj se</a>
+    </div>
+  </header>
+} @else{
+  <header class="top-menu">
+    <div class="menu-left">
+      <a href="/">Početna</a>
+      <a href="/vikendice">Vikendice</a>
+      <a href="/rezervacije_t">Rezervacije</a>
+    </div>
+
+    <div class="menu-right">
+      <a href="/profil">Profil</a>
+      <a href="/promena_lozinke">Promena lozinke</a>
+      <a href="/" (click)="logOut()">Izloguj se</a>
+    </div>
+  </header>
+}
+
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2>Promena lozinke</h2>
+    <form>
+        <!-- Stara Lozinka -->
+      <div class="form-group">
+        <label for="password">Stara lozinka</label>
+        <input type="password" [(ngModel)]="password" id="password" name="password" required/>
+      </div>
+
+      <!-- Nova Lozinka -->
+      <div class="form-group">
+        <label for="password">Nova lozinka</label>
+        <input type="password" [(ngModel)]="password1" id="password1" name="password1" required (blur)="onPasswordBlur()" (input)="onPasswordInput()"/>
+      </div>
+
+      <!-- Nova Lozinka 2 -->
+      <div class="form-group">
+        <label for="password">Ponovite novu lozinku</label>
+        <input type="password" [(ngModel)]="password2" id="password2" name="password2" required/>
+      </div>
+
+      <p class="red">{{mistake}}</p>
+
+      <!-- Dugme -->
+      <button type="submit" (click)="changePass()">Promenite lozinku</button>
+    </form>
+  </div>
+</div>

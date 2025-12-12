@@ -1,0 +1,131 @@
+<header class="top-menu">
+  <div class="menu-left">
+    <a href="/">Početna</a>
+    <a href="/vikendice">Vikendice</a>
+    <a href="/rezervacije_t">Rezervacije</a>
+  </div>
+
+  <div class="menu-right">
+    <a href="/profil">Profil</a>
+    <a href="/promena_lozinke">Promena lozinke</a>
+    <a href="/" (click)="logOut()">Izloguj se</a>
+  </div>
+</header>
+
+
+<div class="page-wrapper">
+    <div class="reservations-wrapper">
+
+    <!-- Aktuelne rezervacije -->
+    <div class="reservation-card">
+        <h2>Aktuelne rezervacije</h2>
+        <table class="reservation-table">
+        <thead>
+            <tr>
+            <th>Početak</th>
+            <th>Kraj</th>
+            <th>Vikendica</th>
+            <th>Mesto</th>
+            <th>Status</th>
+            <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(r of activeRes; track r.id){
+                <tr>
+                    <td>{{r.startDate | date:'short':'UTC'}}</td>
+                    <td>{{r.endDate | date:'short':'UTC'}}</td>
+                    <td>{{getCotName(r.cottageid)}}</td>
+                    <td>{{getCotLocation(r.cottageid)}}</td>
+                    <td>
+                        <span [ngClass]="{'status-prihvacena': r.status === 'prihvacena', 'status-cekanje': r.status !== 'prihvacena'}">
+                        {{getCotStatus(r.status)}}
+                        </span>
+                    </td>
+                    <td><button class="btn danger small" [disabled]="!canCancelReservation(r.startDate)" (click)="cancelReservation(r.id)">Otkaži</button></td>
+                </tr>
+            }
+        </tbody>
+        </table>
+    </div>
+
+    <div class="reservation-card">
+        <h2>Arhiva rezervacija</h2>
+        <table class="reservation-table">
+        <thead>
+            <tr>
+            <th>Početak</th>
+            <th>Vikendica</th>
+            <th>Komentar</th>
+            <th>Ocena</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+@for(r of reservations; track r.id){
+    <tr>
+        <td>{{r.startDate | date:'short':'UTC'}}</td>
+        <td>{{getCotName(r.cottageid)}}</td>
+        @if(r.status=="odbijena"){
+            <td>{{r.rejection_reason}}</td>
+            <td><strong>Rezervacija odbijena</strong></td>
+        } @else if(!hasComment(r)){
+            @if(!showCommentForm || selectedReservationId !== r.id){
+                <td>
+                    <button class="btn primary small" (click)="openCommentForm(r.id)">Dodaj komentar</button>
+                </td>
+            } @else{
+                <td>
+                    <div class="comment-input">
+                        <textarea [(ngModel)]="commentText" placeholder="Unesite komentar..." rows="3"></textarea>
+                        <button class="btn primary small" (click)="saveComment(r.id)">Potvrdi komentar</button>
+                    </div>
+                </td>
+            }
+            
+            <td>
+                <div class="star-rating" aria-label="Oceni">
+                    <input type="radio" id="star5-{{r.id}}" name="rating" value="5" (change)="setRating(5, r.id)" />
+                    <label for="star5-{{r.id}}" title="5">
+                        <img src="img/star-empty.png" alt="5 zvezda" />
+                    </label>
+
+                    <input type="radio" id="star4-{{r.id}}" name="rating" value="4" (change)="setRating(4, r.id)" />
+                    <label for="star4-{{r.id}}" title="4">
+                        <img src="img/star-empty.png" alt="4 zvezde" />
+                    </label>
+
+                    <input type="radio" id="star3-{{r.id}}" name="rating" value="3" (change)="setRating(3, r.id)" />
+                    <label for="star3-{{r.id}}" title="3">
+                        <img src="img/star-empty.png" alt="3 zvezde" />
+                    </label>
+
+                    <input type="radio" id="star2-{{r.id}}" name="rating" value="2" (change)="setRating(2, r.id)" />
+                    <label for="star2-{{r.id}}" title="2">
+                        <img src="img/star-empty.png" alt="2 zvezde" />
+                    </label>
+
+                    <input type="radio" id="star1-{{r.id}}" name="rating" value="1" (change)="setRating(1, r.id)" />
+                    <label for="star1-{{r.id}}" title="1">
+                        <img src="img/star-empty.png" alt="1 zvezda" />
+                    </label>
+                </div>
+            </td>
+        } @else {
+            <td>{{getCommentText(r)}}</td>
+            <td>
+                <span class="rating-stars">
+                    @for(star of getStars(getRating(r)); track $index) {
+                        <img [src]="star ? 'img/star-full.png' : 'img/star-empty.png'" alt="star" class="star-icon" />
+                    }
+                </span>
+            </td>
+        }
+    </tr>
+}
+        </tbody>
+        </table>
+    </div>
+
+    </div>
+</div>

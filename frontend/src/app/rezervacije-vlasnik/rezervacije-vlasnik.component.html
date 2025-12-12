@@ -1,0 +1,113 @@
+<header class="top-menu">
+  <div class="menu-left">
+    <a href="/">Početna</a>
+    <a href="/moje_vikendice">Moje vikendice</a>
+    <a href="/rezervacije_v">Rezervacije</a>
+  </div>
+
+  <div class="menu-right">
+    <a href="/statistika">Statistika</a>
+    <a href="/profil">Profil</a>
+    <a href="/promena_lozinke">Promena lozinke</a>
+    <a href="/" (click)="logOut()">Izloguj se</a>
+  </div>
+</header>
+
+<div class="page-wrapper">
+    <div class="reservations-wrapper">
+
+        <!-- Aktuelne rezervacije -->
+        <div class="reservation-card">
+            <h2>Neobradjene rezervacije</h2>
+            <table class="reservation-table">
+            <thead>
+                <tr>
+                <th>Početak</th>
+                <th>Kraj</th>
+                <th>Vikendica</th>
+                <th>Broj odraslih</th>
+                <th>Broj dece</th>
+                <th>Napomena</th>
+                <th></th>
+                <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(r of reservations; track r.id){
+                    @if(r.status=="neobradjena"){
+                        <tr>
+                            <td>{{r.startDate | date:'short'}}</td>
+                            <td>{{r.endDate | date:'short'}}</td>
+                            <td>{{getCotName(r.cottageid)}}</td>
+                            <td>{{r.adults}}</td>
+                            <td>{{r.children}}</td>
+                            <td>{{r.notes || "Nema napomene"}}</td>
+                            @if(!showTableRejectForm[r.id]) {
+                                <td><button class="btn primary small" (click)="approveReservation(r.id)">Prihvati</button></td>
+                                <td><button class="btn danger small" (click)="showTableReject(r.id)">Odbaci</button></td>
+                            } @else {
+                                <td colspan="2">
+                                    <div class="comment-form">
+                                        <textarea [(ngModel)]="tableRejectComment[r.id]" 
+                                                placeholder="Unesite razlog" rows="2"></textarea>
+                                        <div class="form-buttons">
+                                            <button class="btn danger small" (click)="rejectFromTable(r.id)">Odbaci</button>
+                                            <button class="btn small" (click)="cancelTableReject(r.id)">Otkaži</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="full-calendar-container">
+        <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+
+</div>
+
+
+<!-- Modal za rezervaciju -->
+@if(showModal && selectedReservation) {
+    <div class="modal-backdrop" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Rezervacija - {{getCotName(selectedReservation.cottageid)}}</h3>
+                <button class="close-btn" (click)="closeModal()">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="reservation-details">
+                    <p><strong>Period:</strong> {{selectedReservation.startDate | date:'short'}} - {{selectedReservation.endDate | date:'short'}}</p>
+                    <p><strong>Odrasli:</strong> {{selectedReservation.adults}}</p>
+                    <p><strong>Deca:</strong> {{selectedReservation.children}}</p>
+                    <p><strong>Napomena:</strong> {{selectedReservation.notes || "Nema napomene"}}</p>
+                </div>
+                
+                @if(selectedReservation.status === 'neobradjena') {
+                    @if(!showModalRejectForm) {
+                        <div class="modal-actions">
+                            <button class="btn primary" (click)="approveReservation(selectedReservation.id); closeModal()">Prihvati</button>
+                            <button class="btn danger" (click)="showModalReject()">Odbaci</button>
+                        </div>
+                    } @else {
+                        <div class="comment-form">
+                            <label>Razlog odbijanja:</label>
+                            <textarea [(ngModel)]="modalRejectComment" 
+                                    placeholder="Unesite razlog" rows="3"></textarea>
+                            <div class="form-buttons">
+                                <button class="btn danger" (click)="rejectFromModal()">Odbaci</button>
+                                <button class="btn" (click)="cancelModalReject()">Otkaži</button>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}

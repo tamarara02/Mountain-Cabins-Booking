@@ -1,0 +1,320 @@
+.home-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url("../../../public/img/pozadina.jpg") no-repeat center center / cover;
+  padding: 0;
+  flex-direction: column;
+}
+
+.home-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 700px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.home-card h1 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.home-card p {
+  margin-bottom: 1rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+.home-stats {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.home-stats hr {
+  border: none;
+  border-top: 1px solid #d9e3dc;
+  margin: 0.8rem 0;
+}
+
+.home-stats p {
+  margin: 0.5rem 0;
+  font-weight: 600;
+  color: #284738;
+}
+
+.home-stats span {
+  font-weight: bold;
+  color: #4f7a66;
+}
+
+.home-stats i {
+  margin-right: 0.5rem;
+  color: #284738;
+}
+
+.stats-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.stats-list li {
+  margin: 0.4rem 0;
+  font-weight: 600;
+  color: #284738;
+}
+
+
+/* FILTER SORTER */
+.filter-wrapper{
+  background: url("../../../public/img/pozadina_filter.jpg") no-repeat center center / cover;
+  padding: 1rem;
+}
+
+.filter-sort {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 0.8rem 1.2rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  flex-wrap: wrap;
+}
+
+.filter-sort input {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.filter-sort input:focus {
+  border-color: #4f7a66;
+  box-shadow: 0 0 6px rgba(79, 122, 102, 0.4);
+}
+
+.filter-sort button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4CAF50, #388E3C);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.filter-sort button:hover {
+  background: linear-gradient(135deg, #45a049, #2e7d32);
+  transform: translateY(-2px);
+}
+
+.filter-sort button:active {
+  transform: scale(0.95);
+}
+
+
+/* VIKENDICE */
+
+/* list grid */
+.cottages-list{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap:1rem;
+  background: url("../../../public/img/pozadina_naopako.jpg") no-repeat center center / cover;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* cottage card */
+.cottage-card{
+  display:flex;
+  flex-direction:column;
+  background: rgba(255,255,255,0.9);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transition: transform .15s ease;
+}
+.cottage-card:hover{ transform: translateY(-6px); }
+
+.cottage-media{
+  width:100%;
+  height:160px;
+  overflow:hidden;
+  background:#eee;
+}
+.cottage-media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* body */
+.cottage-body{
+  padding:1rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.6rem;
+}
+.cottage-title{ margin:0; color:#284738; font-size:1.15rem; }
+.cottage-location{ margin:0; color:#4f7a66; font-size:0.95rem; }
+.cottage-services{ color:#444; font-size:0.95rem; margin-top:0.3rem; min-height:42px; }
+.cottage-prices{ display:flex; gap:1rem; flex-wrap:wrap; color:#333; font-size:0.9rem; }
+.cottage-meta{ display:flex; gap:1rem; color:#666; font-size:0.9rem; margin-top:0.5rem; }
+.meta-item{ display:inline-flex; align-items:center; gap:0.35rem; }
+
+/* images */
+.cottage-media.slider {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.cottage-media.slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.slider-btn.prev { left: 5px; }
+.slider-btn.next { right: 5px; }
+
+.top-menu ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem; 
+  margin: 0;
+  padding: 0;
+}
+
+.top-menu a {
+  text-decoration: none;
+  color: #284738;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.top-menu a:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: #6aa389;
+}
+
+/* Horizontalni top menu*/
+.top-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  padding-bottom: 16px;
+  border-radius: 0 0 12px 12px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto; /* centriranje */
+  height: 22px;
+  z-index: 1000;
+  position: relative;
+  margin-top: -55px;
+}
+
+.menu-left, .menu-right {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.menu-left, .menu-right {
+  margin: 0; /* uklonjene fiksne margine */
+}
+
+.menu-right{
+  margin-right: -50px;
+}
+
+.top-menu a {
+  text-decoration: none;
+  color: #284738;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.top-menu a:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: #6aa389;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1300px) {
+  .top-menu {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    margin-top: 0px;
+    padding-bottom: 50px;
+  }
+  .menu-left, .menu-right {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .menu-right{
+    margin-right: 0px;
+  }
+}
+
+@media (max-width: 440px) {
+  .top-menu {
+    padding: 0.5rem 1rem;
+    gap: 0.3rem;
+    margin-top: 0px;
+    padding-bottom: 80px;
+  }
+  .top-menu a {
+    font-size: 0.9rem;
+    padding: 0.2rem 0.5rem;
+  }
+  .menu-right{
+    margin-right: 0px;
+  }
+}

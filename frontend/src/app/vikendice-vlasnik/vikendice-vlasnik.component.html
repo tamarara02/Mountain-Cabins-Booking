@@ -1,0 +1,132 @@
+<header class="top-menu">
+  <div class="menu-left">
+    <a href="/">Početna</a>
+    <a href="/moje_vikendice">Moje vikendice</a>
+    <a href="/rezervacije_v">Rezervacije</a>
+  </div>
+
+  <div class="menu-right">
+    <a href="/statistika">Statistika</a>
+    <a href="/profil">Profil</a>
+    <a href="/promena_lozinke">Promena lozinke</a>
+    <a href="/" (click)="logOut()">Izloguj se</a>
+  </div>
+</header>
+<div class="blurred">
+<div class="page-wrapper">
+<div class="cottages-wrapper">
+  <div class="page-header">
+    <h1>Moje vikendice</h1>
+
+    <div class="actions">
+      <button class="btn primary" (click)="addNew()">Dodaj novu vikendicu</button>
+
+      <!-- JSON upload: popunjava formu (TS treba da obradi) -->
+      <label class="custom-file-upload small">
+        <input type="file" accept=".json" (change)="onJsonUpload($event)">
+        Učitaj iz JSON-a
+      </label>
+    </div>
+  </div>
+
+  <!-- LISTA VIKENDICA -->
+  <div class="cottages-list">
+    <div *ngFor="let c of allCottages" class="cottage-card">
+        <div class="cottage-media slider">
+          <button class="slider-btn prev" (click)="prevPicture(c)" *ngIf="c.pictures.length > 1">❮</button>
+
+          <img [src]="'http://localhost:8080/img/' + getActivePicture(c)" alt="{{ c.name }}">
+
+          <button class="slider-btn next" (click)="nextPicture(c)" *ngIf="c.pictures.length > 1">❯</button>
+        </div>
+
+
+      <div class="cottage-body">
+        <h2 class="cottage-title">{{ c.name }}</h2>
+        <p class="cottage-location">{{ c.location }}</p>
+
+        <div class="cottage-services">{{ c.services }}</div>
+
+        <div class="cottage-prices">
+          <div><strong>Letnja cena:</strong> {{ c.price_summer | number:'1.2-2' }} RSD</div>
+          <div><strong>Zimska cena:</strong> {{ c.price_winter | number:'1.2-2' }} RSD</div>
+          <div><strong>Cena radnim danom:</strong> {{ c.price_weekday ? (c.price_weekday | number:'1.2-2') + ' RSD' : '-' }}</div>
+          <div><strong>Cena vikendom:</strong> {{ c.price_weekend ? (c.price_weekend | number:'1.2-2') + ' RSD' : '-' }}</div>
+        </div>
+
+        <div class="cottage-meta">
+          <span class="meta-item">📞 {{ c.phone || '-' }}</span>
+        </div>
+
+        <div class="cottage-actions">
+          <button class="btn" (click)="edit(c)">Uredi</button>
+          <button class="btn danger" (click)="remove(c.id)">Obriši</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DODAVANJE / UREĐIVANJE (forma) -->
+  <div class="cottage-form-card" *ngIf="editingCottage">
+    <h2>{{ editingCottage.id ? 'Uredi vikendicu' : 'Nova vikendica' }}</h2>
+
+    <form (ngSubmit)="saveCottage()" #cottageForm="ngForm">
+      <div class="form-grid">
+        <div class="col">
+          <label>Ime vikendice</label>
+          <input type="text" [(ngModel)]="editingCottage.name" name="name" required>
+
+          <label>Mesto</label>
+          <input type="text" [(ngModel)]="editingCottage.location" name="location" required>
+
+          <label>Usluge (opis)</label>
+          <textarea rows="4" [(ngModel)]="editingCottage.services" name="services"></textarea>
+
+          <label>Telefon</label>
+          <input type="text" [(ngModel)]="editingCottage.phone" name="phone">
+        </div>
+
+        <div class="col">
+          <label>Cena - letnji period (RSD)</label>
+          <input type="number" [(ngModel)]="editingCottage.price_summer" name="price_summer" required>
+
+          <label>Cena - zimski period (RSD)</label>
+          <input type="number" [(ngModel)]="editingCottage.price_winter" name="price_winter" required>
+
+          <label>Cena radnim danom (RSD)</label>
+          <input type="number" [(ngModel)]="editingCottage.price_weekday" name="price_weekday">
+
+          <label>Cena vikendom (RSD)</label>
+          <input type="number" [(ngModel)]="editingCottage.price_weekend" name="price_weekend">
+
+          <label>Koordinate (lat, lon)</label>
+          <div class="coords-row">
+            <input type="text" placeholder="lat" [(ngModel)]="editingCottage.coord_x" name="latitude">
+            <input type="text" placeholder="lon" [(ngModel)]="editingCottage.coord_y" name="longitude">
+          </div>
+        </div>
+      </div>
+
+      <div class="files-row">
+        <label class="custom-file-upload">
+          <input type="file" accept=".jpg,.jpeg,.png" multiple (change)="onImagesSelected($event)">
+          Dodaj slike vikendice
+        </label>
+        <div class="files-list">
+          <span *ngFor="let f of selectedImageNames; let i = index" class="file-name">
+            {{ f }} 
+            <button type="button" class="remove-btn" (click)="removeSelectedImage(i)">✕</button>
+          </span>
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button class="btn primary" type="submit">{{ editingCottage.id ? 'Sačuvaj promene' : 'Kreiraj vikendicu' }}</button>
+        <button type="button" class="btn" (click)="cancelEdit()">Otkaži</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,110 @@
+<header class="top-menu">
+  <ul>
+    <li><a href="/">Početna</a></li>
+    <li><a href="/prijava">Prijava</a></li>
+    <li><a href="/registracija">Registracija</a></li>
+  </ul>
+</header>
+
+
+<div class="login-wrapper">
+  <div class="login-card register-card">
+    <h2>Registracija</h2>
+    <form>
+
+      <div class="form-row">
+        <!-- Leva kolona -->
+        <div class="form-col">
+          <div class="form-group">
+            <label for="username">Korisničko ime</label>
+            <input type="text" [(ngModel)]="username" id="username" name="username" required/>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Lozinka</label>
+            <input type="password" [(ngModel)]="password" id="password" name="password" required (blur)="onPasswordBlur()" (input)="onPasswordInput()"/>
+            <small *ngIf="passwordError" class="red">{{ passwordError }}</small>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Ime</label>
+            <input type="text" [(ngModel)]="name" id="name" name="name" required/>
+          </div>
+
+          <div class="form-group">
+            <label for="lastname">Prezime</label>
+            <input type="text" [(ngModel)]="lastname" id="lastname" name="lastname" required/>
+          </div>
+
+          <div class="form-group">
+            <label for="gender">Pol</label>
+            <select [(ngModel)]="gender" id="gender" name="gender" class="custom-select" required>
+              <option value="" disabled selected>Izaberite pol</option>
+              <option value="M">M</option>
+              <option value="Ž">Ž</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Adresa</label>
+            <input type="text" [(ngModel)]="address" id="address" name="address" required/>
+          </div>
+
+        </div>
+
+        <!-- Desna kolona -->
+        <div class="form-col">
+          
+          <div class="form-group">
+            <label for="phone">Kontakt telefon</label>
+            <input type="text" [(ngModel)]="phone" id="phone" name="phone" (blur)="onPhoneBlur()" (input)="onPhoneInput()" required/>
+            <small *ngIf="phoneError" class="red">{{ phoneError }}</small>
+          </div>
+
+          <div class="form-group">
+            <label for="mail">E-mail adresa</label>
+            <input type="email" [(ngModel)]="mail" id="mail" name="mail" (blur)="onMailBlur()" (input)="onMailInput()" required/>
+            <small *ngIf="mailError" class="red">{{ mailError }}</small>
+          </div>
+
+          <div class="form-group">
+            <label for="picture">Profilna slika</label>
+            <label class="custom-file-upload">
+              <input type="file" accept=".jpg,.jpeg,.png" (change)="onFileSelected($event)" id="picture" name="picture"/>
+              Izaberite fajl
+            </label>
+            <span *ngIf="selectedPictureName">{{ selectedPictureName }}</span>
+            <small *ngIf="pictureError" class="red">{{ pictureError }}</small>
+          </div>
+
+          <div class="form-group">
+            <label for="card">Broj kreditne kartice</label>
+            <div class="card-input-wrapper">
+                <input type="text" [(ngModel)]="card" id="card" name="card" required
+                    (blur)="onCardBlur()" (input)="onCardInput()"/>
+                <div class="card-icon" [ngClass]="cardType"></div>
+
+            </div>
+            <small *ngIf="cardError" class="red">{{ cardError }}</small>
+          </div>
+
+
+          <div class="form-group">
+            <label for="type">Tip korisnika</label>
+            <select [(ngModel)]="type" id="type" name="type" class="custom-select" required>
+              <option value="" disabled selected>Izaberite tip</option>
+              <option value="turista">Turista</option>
+              <option value="vlasnik">Vlasnik</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Poruka o grešci -->
+      <p class="red">{{mistake}}</p>
+
+      <!-- Dugme -->
+      <button type="submit" (click)="register()">Registrujte se</button>
+    </form>
+  </div>
+</div>

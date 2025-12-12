@@ -1,0 +1,141 @@
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("../../../public/img/pozadina.jpg") no-repeat center center / cover;
+  padding-top: 0;
+}
+
+.login-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 350px;
+  margin: 0px;
+}
+
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  color: #444;
+}
+
+input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+input:focus {
+  border-color: #007bff;
+}
+
+button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #4f7a66;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #6aa389;
+}
+
+.red {
+  color: #ff4d4f;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 0.8rem;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+
+
+/* Horizontalni top menu */
+.top-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  padding-bottom: 16px;
+  border-radius: 0 0 12px 12px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto; /* centriranje */
+  height: 22px;
+  z-index: 1000;
+  position: relative;
+  margin-top: -55px;
+}
+
+.top-menu ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem; 
+  margin: 0;
+  padding: 0;
+}
+
+.top-menu a {
+  text-decoration: none;
+  color: #284738;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.top-menu a:hover {
+  background: rgba(255, 255, 255, 0.6);
+  color: #6aa389;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 1300px) {
+  .top-menu {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    margin-top: 0px;
+  }
+}
+
+@media (max-width: 440px) {
+  .top-menu {
+    padding: 0.5rem 1rem;
+    gap: 0.3rem;
+    margin-top: 0px;
+  }
+  .top-menu a {
+    font-size: 0.9rem;
+    padding: 0.2rem 0.5rem;
+  }
+}

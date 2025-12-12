@@ -1,0 +1,32 @@
+<header class="top-menu">
+  <div class="menu-left">
+    <a href="/">Početna</a>
+    <a href="/moje_vikendice">Moje vikendice</a>
+    <a href="/rezervacije_v">Rezervacije</a>
+  </div>
+
+  <div class="menu-right">
+    <a href="/statistika">Statistika</a>
+    <a href="/profil">Profil</a>
+    <a href="/promena_lozinke">Promena lozinke</a>
+    <a href="/" (click)="logOut()">Izloguj se</a>
+  </div>
+</header>
+
+
+<div class="page-wrapper">
+    <div class="reservations-wrapper">
+        <div class="reservation-card">
+            <h2>Broj ostvarenih rezervacija po mesecima</h2>
+            <ag-charts [options]="barChartOptions"> </ag-charts>
+        </div>
+    </div>
+
+    <div class="reservations-wrapper">
+        <div class="reservation-card">
+            <h2>Odnos rezervacija tokom vikenda i radne nedelje</h2>
+            <ag-charts [options]="pieChartOptions"> </ag-charts>
+        </div>
+    </div>
+</div>
+

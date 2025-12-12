@@ -1,0 +1,72 @@
+<header class="top-menu">
+  <div class="menu-left">
+    <a href="/">Početna</a>
+    <a href="/vikendice">Vikendice</a>
+    <a href="/rezervacije_t">Rezervacije</a>
+  </div>
+
+  <div class="menu-right">
+    <a href="/profil">Profil</a>
+    <a href="/promena_lozinke">Promena lozinke</a>
+    <a href="/" (click)="logOut()">Izloguj se</a>
+  </div>
+</header>
+
+  
+    <!-- FILTER I SORT -->
+<div class="filter-wrapper">
+<div class="filter-sort">
+    <input type="text" placeholder="Pretraži po nazivu" [(ngModel)]="searchName">
+    <input type="text" placeholder="Pretraži po mestu" [(ngModel)]="searchLocation">
+
+    <button (click)="sortBy('name')">
+    Sortiraj po nazivu {{ sortColumn==='name' ? (sortDirection==='asc' ? '▲' : '▼') : '' }}
+    </button>
+
+    <button (click)="sortBy('location')">
+    Sortiraj po mestu {{ sortColumn==='location' ? (sortDirection==='asc' ? '▲' : '▼') : '' }}
+    </button>
+</div>
+</div>
+<!-- LISTA VIKENDICA -->
+<div class="cottages-list">
+    <div *ngFor="let c of getFilteredAndSortedCottages()" class="cottage-card">
+        <div class="cottage-media slider">
+        <button class="slider-btn prev" (click)="prevPicture(c)" *ngIf="c.pictures.length > 1">❮</button>
+
+        <img [src]="'http://localhost:8080/img/' + getActivePicture(c)" alt="{{ c.name }}">
+
+        <button class="slider-btn next" (click)="nextPicture(c)" *ngIf="c.pictures.length > 1">❯</button>
+        </div>
+
+
+    <div class="cottage-body">
+        <h2 class="cottage-title"><a (click)="goTo(c.id)">{{ c.name }}</a></h2>
+        <p class="cottage-location">{{ c.location }}</p>
+
+        <div class="cottage-services">{{ c.services }}</div>
+        <div class="cottage-rating">
+            <strong>Ocena:</strong>  <span class="rating-number">{{ c.rating | number:'1.1-2' }}</span>
+            <span class="rating-stars">
+                <ng-container *ngFor="let star of getStars(c.rating); let i = index">
+                    <img [src]="star ? 'img/star-full.png' : 'img/star-empty.png'" alt="star" />
+                </ng-container>
+            </span>
+        </div>
+        <div class="cottage-prices">
+        <div><strong>Letnja cena:</strong> {{ c.price_summer | number:'1.2-2' }} RSD</div>
+        <div><strong>Zimska cena:</strong> {{ c.price_winter | number:'1.2-2' }} RSD</div>
+        <div><strong>Cena radnim danom:</strong> {{ c.price_weekday ? (c.price_weekday | number:'1.2-2') + ' RSD' : '-' }}</div>
+        <div><strong>Cena vikendom:</strong> {{ c.price_weekend ? (c.price_weekend | number:'1.2-2') + ' RSD' : '-' }}</div>
+        </div>
+
+        <div class="cottage-meta">
+        <span class="meta-item">📞 {{ c.phone || '-' }}</span>
+        </div>
+
+    </div>
+    </div>
+</div>
+
+
+

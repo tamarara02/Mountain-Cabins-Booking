@@ -1,0 +1,92 @@
+@if(type=='vlasnik'){
+  <header class="top-menu">
+    <div class="menu-left">
+      <a href="/">Početna</a>
+      <a href="/moje_vikendice">Moje vikendice</a>
+      <a href="/rezervacije_v">Rezervacije</a>
+    </div>
+
+    <div class="menu-right">
+      <a href="/statistika">Statistika</a>
+      <a href="/profil">Profil</a>
+      <a href="/promena_lozinke">Promena lozinke</a>
+      <a href="/" (click)="logOut()">Izloguj se</a>
+    </div>
+  </header>
+} @else{
+  <header class="top-menu">
+    <div class="menu-left">
+      <a href="/">Početna</a>
+      <a href="/vikendice">Vikendice</a>
+      <a href="/rezervacije_t">Rezervacije</a>
+    </div>
+
+    <div class="menu-right">
+      <a href="/profil">Profil</a>
+      <a href="/promena_lozinke">Promena lozinke</a>
+      <a href="/" (click)="logOut()">Izloguj se</a>
+    </div>
+  </header>
+}
+
+
+<div class="profile-wrapper">
+  <div class="profile-card">
+    <h1>Profil</h1>
+    
+    <div class="profile-picture">
+      <img [src]="profilePicture" alt="Profilna slika">
+    </div>
+    <div class="profile-picture-button">
+        <label class="custom-file-upload">
+              <input type="file" accept=".jpg,.jpeg,.png" (change)="onFileSelected($event)" id="picture" name="picture"/>
+              Izaberite fajl
+            </label>
+            <span *ngIf="selectedPictureName">{{ selectedPictureName }}</span>
+            <small *ngIf="pictureError" class="red">{{ pictureError }}</small>
+    </div>
+
+    <form (ngSubmit)="updateProfile()" #profileForm="ngForm">
+      <div class="form-row">
+        <div class="form-column">
+          <div class="form-group">
+            <label>Ime</label>
+            <input type="text" [(ngModel)]="name" name="name">
+          </div>
+
+          <div class="form-group">
+            <label>Prezime</label>
+            <input type="text" [(ngModel)]="lastname" name="lastname">
+          </div>
+
+          <div class="form-group">
+            <label>Adresa</label>
+            <input type="text" [(ngModel)]="address" name="address">
+          </div>
+        </div>
+
+        <div class="form-column">
+          <div class="form-group">
+            <label>E-mail adresa</label>
+            <input type="email" [(ngModel)]="mail" id="mail" name="mail" (blur)="onMailBlur()" (input)="onMailInput()" required/>
+            <small *ngIf="mailError" class="red">{{ mailError }}</small>
+          </div>
+
+          <div class="form-group">
+            <label>Telefon</label>
+            <input type="text" [(ngModel)]="phone" id="phone" name="phone" (blur)="onPhoneBlur()" (input)="onPhoneInput()" required/>
+            <small *ngIf="phoneError" class="red">{{ phoneError }}</small>
+          </div>
+
+          <div class="form-group">
+            <label>Broj kartice</label>
+            <input type="text" [(ngModel)]="card" id="card" name="card" required (blur)="onCardBlur()" (input)="onCardInput()"/>
+            <small *ngIf="cardError" class="red">{{ cardError }}</small>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="update-button">Ažuriraj profil</button>
+    </form>
+  </div>
+</div>
